@@ -10,7 +10,7 @@ function get_xray_keys($user_data, $server_name) {
 		'srv_name')[$server_name]->key_data ?? null;
 }
 
-function make_relay($srv_data, $relay_srv_data) {
+function make_relayed($srv_data, $relay_srv_data) {
 	$relay = clone $srv_data;
 	$relay->key_name = preg_replace(
 		"/([A-Z][A-Z]).*/", "$1 (relay)", $srv_data->key_name);

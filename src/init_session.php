@@ -38,7 +38,7 @@ if (!empty($_SESSION['username'])) {
 	$username = $_SESSION['username'];
 
 	$FRONTEND_DATA = generate_frontend_data(
-		find_user($username, $USER_DB), $SERVER_DB, 'dummy3');
+		find_user($username, $USER_DB), $SERVER_DB);
 }
 
 ?>

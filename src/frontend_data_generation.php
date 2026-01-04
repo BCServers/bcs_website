@@ -16,12 +16,17 @@ function find_server($server_name, $SERVER_DB) {
 	return array_column($SERVER_DB, null, 'srv_name')[$server_name] ?? null;
 }
 
-function generate_awg_keys($user_awg_key_data, $SERVER_DB, $relay_name) {
+function get_relay_server($SERVER_DB) {
+	return array_column($SERVER_DB, null, 'use_as_relay')[true] ?? null;
+}
+
+function generate_awg_keys($user_awg_key_data, $SERVER_DB) {
 	$keys = array();
+	$relay_srv = get_relay_server($SERVER_DB);
 
 	foreach($user_awg_key_data as $ukd) {
 		$srv = find_server($ukd->srv_name, $SERVER_DB);
-		$relay_srv = make_relay($srv, find_server($relay_name, $SERVER_DB));
+		$rsrv = make_relayed($srv, $relay_srv);
 
 		usort($ukd->key_data, // sort by IP
 			function ($a, $b) {
@@ -30,19 +35,19 @@ function generate_awg_keys($user_awg_key_data, $SERVER_DB, $relay_name) {
 			}
 		);
 
-		$is_srv_relay = ($srv->srv_name === $relay_name);
+		$is_srv_relay = ($srv === $relay_srv);
 		$keys[$ukd->srv_name] = array();
 
 		foreach($ukd->key_data as $i => $key_data) {
 			$key['main']['native'] =
 				generate_awg_native_conf($key_data, $srv);
 			$key['relay']['native'] = $is_srv_relay ? '' :
-				generate_awg_native_conf($key_data, $relay_srv);
+				generate_awg_native_conf($key_data, $rsrv);
 
 			$key['main']['encoded'] = encode_config(
 				generate_awg_full_conf($key_data, $srv, $i+1));
 			$key['relay']['encoded'] = $is_srv_relay ? '' : encode_config(
-				generate_awg_full_conf($key_data, $relay_srv, $i+1));
+				generate_awg_full_conf($key_data, $rsrv, $i+1));
 
 			array_push($keys[$ukd->srv_name], $key);
 		}
@@ -50,26 +55,27 @@ function generate_awg_keys($user_awg_key_data, $SERVER_DB, $relay_name) {
 	return $keys;
 }
 
-function generate_xray_keys($user_xray_key_data, $SERVER_DB, $relay_name) {
+function generate_xray_keys($user_xray_key_data, $SERVER_DB) {
 	$keys = array();
+	$relay_srv = get_relay_server($SERVER_DB);
 
 	foreach($user_xray_key_data as $ukd) {
 		$srv = find_server($ukd->srv_name, $SERVER_DB);
-		$relay_srv = make_relay($srv, find_server($relay_name, $SERVER_DB));
+		$rsrv = make_relayed($srv, $relay_srv);
 
-		$is_srv_relay = ($srv->srv_name === $relay_name);
+		$is_srv_relay = ($srv === $relay_srv);
 		$keys[$ukd->srv_name] = array();
 
 		foreach($ukd->key_data as $i => $key_data) {
 			$key['main']['native'] =
 				generate_xray_native_conf($key_data, $srv);
 			$key['relay']['native'] = $is_srv_relay ? '' :
-				generate_xray_native_conf($key_data, $relay_srv);
+				generate_xray_native_conf($key_data, $rsrv);
 
 			$key['main']['encoded'] = encode_config(
 				generate_xray_full_conf($key_data, $srv, $i+1));
 			$key['relay']['encoded'] = $is_srv_relay ? '' : encode_config(
-				generate_xray_full_conf($key_data, $relay_srv, $i+1));
+				generate_xray_full_conf($key_data, $rsrv, $i+1));
 
 			array_push($keys[$ukd->srv_name], $key);
 		}
@@ -77,15 +83,15 @@ function generate_xray_keys($user_xray_key_data, $SERVER_DB, $relay_name) {
 	return $keys;
 }
 
-function generate_frontend_data($user_data, $SERVER_DB, $relay_name) {
+function generate_frontend_data($user_data, $SERVER_DB) {
 	$frontend_data = array();
 	$frontend_data['user_real_name'] = $user_data->real_name;
 	$frontend_data['access_srv_data'] = array();
 
 	$awg_keys = generate_awg_keys(
-		$user_data->awg_key_data, $SERVER_DB, $relay_name);
+		$user_data->awg_key_data, $SERVER_DB);
 	$xray_keys = generate_xray_keys(
-		$user_data->xray_key_data, $SERVER_DB, $relay_name);
+		$user_data->xray_key_data, $SERVER_DB);
 
 	foreach($SERVER_DB as $srv) {
 		$srv_name = $srv->srv_name;
