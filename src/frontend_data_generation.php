@@ -102,8 +102,16 @@ function generate_frontend_data($user_data, $SERVER_DB, $relay_name) {
 	$xray_keys = generate_xray_keys(
 		$user_data->xray_key_data, $SERVER_DB, $relay_name);
 
-
 	for($i = 0; $i < count($SERVER_DB); ++$i) {
+		$user_has_awg_keys = array_key_exists(
+			$SERVER_DB[$i]->srv_name, $awg_keys);
+		$user_has_xray_keys = array_key_exists(
+			$SERVER_DB[$i]->srv_name, $xray_keys);
+
+		if (!$user_has_awg_keys && !$user_has_xray_keys) {
+			continue;
+		}
+
 		$srv_name = $SERVER_DB[$i]->srv_name;
 
 		$frontend_data['access_srv_data'][$srv_name]['name'] =
@@ -115,16 +123,10 @@ function generate_frontend_data($user_data, $SERVER_DB, $relay_name) {
 		$frontend_data['access_srv_data'][$srv_name]['display_order'] =
 			$SERVER_DB[$i]->display_order;
 
-		$this_srv_awg_keys = [];
-		if (array_key_exists($srv_name, $awg_keys)) {
-			$this_srv_awg_keys = $awg_keys[$srv_name];
-		}
-
 		$frontend_data['access_srv_data'][$srv_name]['awg_keys'] =
-			$this_srv_awg_keys;
+			$user_has_awg_keys ? $awg_keys[$srv_name] : NULL;
 		$frontend_data['access_srv_data'][$srv_name]['xray_keys'] =
-			array_key_exists($srv_name, $xray_keys) ? 
-				$xray_keys[$srv_name] : NULL;
+			$user_has_xray_keys ? $xray_keys[$srv_name] : NULL;
 	}
 
 	usort($frontend_data['access_srv_data'], 
