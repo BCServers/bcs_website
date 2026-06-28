@@ -14,7 +14,7 @@ function generate_xray_last_conf($key_data, $srv_data) {
 			"settings" => [
 				"vnext" => array([
 					"address" => $srv_data->host_name,
-					"port" => 443,
+					"port" => intval($srv_data->xray_params->port),
 					"users" => array([
 						"id" => $key_data->id,
 						"flow" => "xtls-rprx-vision",

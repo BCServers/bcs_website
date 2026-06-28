@@ -15,6 +15,10 @@ function make_relayed($srv_data, $relay_srv_data) {
 	$relay->key_name = preg_replace(
 		"/([A-Z][A-Z]).*/", "$1 (relay)", $srv_data->key_name);
 	$relay->host_name = $relay_srv_data->host_name;
+	if (!empty((array)$relay->xray_params)) {
+		$relay->xray_params = clone $relay->xray_params;
+		$relay->xray_params->port = $relay->xray_params->relay_port;
+	}
 	return $relay;
 }
 
