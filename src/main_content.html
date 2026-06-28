@@ -205,8 +205,9 @@
 
         $mainbtn_xray = get_xray_key_button(
           $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['main'], "main");
-        $relaybtn_xray = get_xray_key_button(
-          $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['relay'], "relay");
+        //$relaybtn_xray = get_xray_key_button(
+        //  $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['relay'], "relay");
+        $relaybtn_xray = "Ретрансляция<br>не поддерживается";
 
         echo ""
         ."<tr>" . PHP_EOL
@@ -236,8 +237,9 @@
 
         $mainbtn_xray = get_xray_key_button(
           $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['main'], "main");
-        $relaybtn_xray = get_xray_key_button(
-          $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['relay'], "relay");
+        //$relaybtn_xray = get_xray_key_button(
+        //  $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['relay'], "relay");
+        $relaybtn_xray = "Ретрансляция не поддерживается";
 
         echo ""
         ."<tr>" . PHP_EOL
