@@ -11,10 +11,17 @@ function generate_awg_native_internal_conf($key_data, $srv_data) {
 		"Jmax = " . $srv_data->awg_params->Jmax . PHP_EOL .
 		"S1 = " . $srv_data->awg_params->S1 . PHP_EOL .
 		"S2 = " . $srv_data->awg_params->S2 . PHP_EOL .
+		"S3 = " . $srv_data->awg_params->S3 . PHP_EOL .
+		"S4 = " . $srv_data->awg_params->S4 . PHP_EOL .
 		"H1 = " . $srv_data->awg_params->H1 . PHP_EOL .
 		"H2 = " . $srv_data->awg_params->H2 . PHP_EOL .
 		"H3 = " . $srv_data->awg_params->H3 . PHP_EOL .
 		"H4 = " . $srv_data->awg_params->H4 . PHP_EOL .
+		"I1 = " . $srv_data->awg_params->I1 . PHP_EOL .
+		"I2 = " . $srv_data->awg_params->I2 . PHP_EOL .
+		"I3 = " . $srv_data->awg_params->I3 . PHP_EOL .
+		"I4 = " . $srv_data->awg_params->I4 . PHP_EOL .
+		"I5 = " . $srv_data->awg_params->I5 . PHP_EOL .
 		PHP_EOL .
 		"[Peer]" . PHP_EOL .
 		"PublicKey = " . $srv_data->awg_params->pub_key . PHP_EOL .
@@ -31,11 +38,19 @@ function generate_awg_last_conf($key_data, $srv_data) {
 		"H2" => $srv_data->awg_params->H2,
 		"H3" => $srv_data->awg_params->H3,
 		"H4" => $srv_data->awg_params->H4,
+		"I1" => $srv_data->awg_params->I1,
+		"I2" => $srv_data->awg_params->I2,
+		"I3" => $srv_data->awg_params->I3,
+		"I4" => $srv_data->awg_params->I4,
+		"I5" => $srv_data->awg_params->I5,
 		"Jc" => $srv_data->awg_params->Jc,
 		"Jmax" => $srv_data->awg_params->Jmax,
 		"Jmin" => $srv_data->awg_params->Jmin,
 		"S1" => $srv_data->awg_params->S1,
 		"S2" => $srv_data->awg_params->S2,
+		"S3" => $srv_data->awg_params->S3,
+		"S4" => $srv_data->awg_params->S4,
+		"allowed_ips" => ["0.0.0.0/0", "::/0"],
 		"clientId" => $key_data->pub_key,
 		"client_ip" => $key_data->IP,
 		"client_priv_key" => $key_data->priv_key,
@@ -43,6 +58,7 @@ function generate_awg_last_conf($key_data, $srv_data) {
 		"config" => generate_awg_native_internal_conf($key_data, $srv_data),
 		"hostName" => $srv_data->host_name,
 		"mtu" => $srv_data->awg_params->MTU,
+		"persistent_keep_alive" => "25",
 		"port" => (int)$srv_data->awg_params->port,
 		"psk_key" => $srv_data->awg_params->psk_key,
 		"server_pub_key" => $srv_data->awg_params->pub_key,
@@ -63,18 +79,27 @@ function generate_awg_full_conf($key_data, $srv_data, $key_num) {
 				"H2" => $srv_data->awg_params->H2,
 				"H3" => $srv_data->awg_params->H3,
 				"H4" => $srv_data->awg_params->H4,
+				"I1" => $srv_data->awg_params->I1,
+				"I2" => $srv_data->awg_params->I2,
+				"I3" => $srv_data->awg_params->I3,
+				"I4" => $srv_data->awg_params->I4,
+				"I5" => $srv_data->awg_params->I5,
 				"Jc" => $srv_data->awg_params->Jc,
 				"Jmax" => $srv_data->awg_params->Jmax,
 				"Jmin" => $srv_data->awg_params->Jmin,
 				"S1" => $srv_data->awg_params->S1,
 				"S2" => $srv_data->awg_params->S2,
+				"S3" => $srv_data->awg_params->S3,
+				"S4" => $srv_data->awg_params->S4,
 				"last_config" => generate_awg_last_conf(
 					$key_data, $srv_data),
 				"port" => $srv_data->awg_params->port,
+				"protocol_version" => "2",
+				"subnet_address" => "10.8.1.0",
 				"transport_proto" => "udp"],
-			"container" => "amnezia-awg"
+			"container" => "amnezia-awg2"
 		]),
-		"defaultContainer" => "amnezia-awg",
+		"defaultContainer" => "amnezia-awg2",
 		"description" => preg_replace(
 			"/([A-Z][A-Z])/", "$1 ".$key_num, $srv_data->key_name),
 		"dns1" => $srv_data->dns1,
