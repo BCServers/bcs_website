@@ -235,9 +235,9 @@
           $srv['name'], array_column($srv['awg_keys'], 'relay'), "relay");
 
         $mainbtn_xray = get_xray_key_button(
-          $srv['name'], $srv['xray_keys'][0]['main'], "main");
+          $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['main'], "main");
         $relaybtn_xray = get_xray_key_button(
-          $srv['name'], $srv['xray_keys'][0]['relay'], "relay");
+          $srv['name'], is_null($srv['xray_keys']) ? '' : $srv['xray_keys'][0]['relay'], "relay");
 
         echo ""
         ."<tr>" . PHP_EOL
