@@ -17,16 +17,21 @@ function generate_xray_last_conf($key_data, $srv_data) {
 					"port" => intval($srv_data->xray_params->port),
 					"users" => array([
 						"id" => $key_data->id,
-						"flow" => "xtls-rprx-vision",
+						"flow" => $srv_data->xray_params->network == "tcp" ?
+							"xtls-rprx-vision" : "",
 						"encryption" => "none",
 					])
 				])
 			],
 			"streamSettings" => [
-				"network" => "tcp",
+				"network" => $srv_data->xray_params->network,
+				"xhttpSettings" => [
+					"path" => "/portal",
+					"mode" => "packet-up",
+				],
 				"security" => "reality",
 				"realitySettings" => [
-					"fingerprint" => "chrome",
+					"fingerprint" => $srv_data->xray_params->fingerprint,
 					"serverName" => $srv_data->xray_params->site,
 					"publicKey" => $srv_data->xray_params->pub_key,
 					"shortId" => $srv_data->xray_params->short_id,

@@ -40,6 +40,7 @@
             "priv_key": "priv_key_xray_dummy1",
             "uuid_key": "uuid_key_xray_dummy1",
             "port": "443",
+            "network": "tcp",
             "relay_port": "6501"
         }
     },
@@ -120,6 +121,7 @@
             "priv_key": "priv_key_xray_dummy2",
             "uuid_key": "uuid_key_xray_dummy2",
             "port": "443",
+            "network": "xhttp",
             "relay_port": "6502"
         }
     }
