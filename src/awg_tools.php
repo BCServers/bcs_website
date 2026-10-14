@@ -22,6 +22,23 @@ function generate_awg_native_internal_conf($key_data, $srv_data) {
 		"I3 = " . $srv_data->awg_params->I3 . PHP_EOL .
 		"I4 = " . $srv_data->awg_params->I4 . PHP_EOL .
 		"I5 = " . $srv_data->awg_params->I5 . PHP_EOL .
+		"HeaderProtectionKey = " .
+			$srv_data->awg_params->HeaderProtectionKey . PHP_EOL .
+		"ContentPaddingAddition = " .
+			$srv_data->awg_params->ContentPaddingAddition . PHP_EOL .
+		"RekeyAfterTime = " .
+			$srv_data->awg_params->RekeyAfterTime . PHP_EOL .
+		"RekeyTimeout = " .
+			$srv_data->awg_params->RekeyTimeout . PHP_EOL .
+		"RejectAfterTime = " .
+			$srv_data->awg_params->RejectAfterTime . PHP_EOL .
+		"KeepaliveTimeout = " .
+			$srv_data->awg_params->KeepaliveTimeout . PHP_EOL .
+		"MaxHandshakeAttempts = " .
+			$srv_data->awg_params->MaxHandshakeAttempts . PHP_EOL .
+		"RandomTrailers = " .
+			$srv_data->awg_params->RandomTrailers . PHP_EOL .
+		"DisableCookies = " .$srv_data->awg_params->DisableCookies . PHP_EOL .
 		PHP_EOL .
 		"[Peer]" . PHP_EOL .
 		"PublicKey = " . $srv_data->awg_params->pub_key . PHP_EOL .
@@ -29,7 +46,7 @@ function generate_awg_native_internal_conf($key_data, $srv_data) {
 		"AllowedIPs = 0.0.0.0/0, ::/0" . PHP_EOL .
 		"Endpoint = " . $srv_data->host_name . ":" . 
 			$srv_data->awg_params->port . PHP_EOL .
-		"PersistentKeepalive = 25" . PHP_EOL;
+		"PersistentKeepalive = 25-35" . PHP_EOL;
 }
 
 function generate_awg_last_conf($key_data, $srv_data) {
@@ -50,6 +67,24 @@ function generate_awg_last_conf($key_data, $srv_data) {
 		"S2" => $srv_data->awg_params->S2,
 		"S3" => $srv_data->awg_params->S3,
 		"S4" => $srv_data->awg_params->S4,
+		"HeaderProtectionKey" =>
+			$srv_data->awg_params->HeaderProtectionKey,
+		"ContentPaddingAddition" =>
+			$srv_data->awg_params->ContentPaddingAddition,
+		"RekeyAfterTime" =>
+			$srv_data->awg_params->RekeyAfterTime,
+		"RekeyTimeout" =>
+			$srv_data->awg_params->RekeyTimeout,
+		"RejectAfterTime" =>
+			$srv_data->awg_params->RejectAfterTime,
+		"KeepaliveTimeout" =>
+			$srv_data->awg_params->KeepaliveTimeout,
+		"MaxHandshakeAttempts" =>
+			$srv_data->awg_params->MaxHandshakeAttempts,
+		"RandomTrailers" =>
+			$srv_data->awg_params->RandomTrailers,
+		"DisableCookies" =>
+			$srv_data->awg_params->DisableCookies,
 		"allowed_ips" => ["0.0.0.0/0", "::/0"],
 		"clientId" => $key_data->pub_key,
 		"client_ip" => $key_data->IP,
@@ -58,7 +93,7 @@ function generate_awg_last_conf($key_data, $srv_data) {
 		"config" => generate_awg_native_internal_conf($key_data, $srv_data),
 		"hostName" => $srv_data->host_name,
 		"mtu" => $srv_data->awg_params->MTU,
-		"persistent_keep_alive" => "25",
+		"persistent_keep_alive" => "25-35",
 		"port" => (int)$srv_data->awg_params->port,
 		"psk_key" => $srv_data->awg_params->psk_key,
 		"server_pub_key" => $srv_data->awg_params->pub_key,
@@ -91,10 +126,28 @@ function generate_awg_full_conf($key_data, $srv_data, $key_num) {
 				"S2" => $srv_data->awg_params->S2,
 				"S3" => $srv_data->awg_params->S3,
 				"S4" => $srv_data->awg_params->S4,
+				"HeaderProtectionKey" =>
+					$srv_data->awg_params->HeaderProtectionKey,
+				"ContentPaddingAddition" =>
+					$srv_data->awg_params->ContentPaddingAddition,
+				"RekeyAfterTime" =>
+					$srv_data->awg_params->RekeyAfterTime,
+				"RekeyTimeout" =>
+					$srv_data->awg_params->RekeyTimeout,
+				"RejectAfterTime" =>
+					$srv_data->awg_params->RejectAfterTime,
+				"KeepaliveTimeout" =>
+					$srv_data->awg_params->KeepaliveTimeout,
+				"MaxHandshakeAttempts" =>
+					$srv_data->awg_params->MaxHandshakeAttempts,
+				"RandomTrailers" =>
+					$srv_data->awg_params->RandomTrailers,
+				"DisableCookies" =>
+					$srv_data->awg_params->DisableCookies,
 				"last_config" => generate_awg_last_conf(
 					$key_data, $srv_data),
 				"port" => $srv_data->awg_params->port,
-				"protocol_version" => "2",
+				"protocol_version" => "3.1",
 				"subnet_address" => "10.8.1.0",
 				"transport_proto" => "udp"],
 			"container" => "amnezia-awg2"
