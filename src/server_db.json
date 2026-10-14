@@ -35,6 +35,7 @@
         },
         "xray_params": {
             "site": "www.site1.com",
+            "fingerprint": "firefox",
             "short_id": "short_id_1",
             "pub_key": "pub_key_xray_dummy1",
             "priv_key": "priv_key_xray_dummy1",
@@ -116,6 +117,7 @@
         },
         "xray_params": {
             "site": "www.site2.com",
+            "fingerprint": "qq",
             "short_id": "short_id_2",
             "pub_key": "pub_key_xray_dummy2",
             "priv_key": "priv_key_xray_dummy2",
